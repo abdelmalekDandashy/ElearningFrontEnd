@@ -8,14 +8,9 @@ import {
     Col,
     CardTitle,
 } from "reactstrap";
-import { updateUnionTypeNode } from "typescript";
 
 
-const AnswerDetails = (props) => {
-    let unansweredQuestions = props?.unansweredQuestions ? props.unansweredQuestions : null;
-
-
-
+const AnswerQuestion = (props) => {
     //  const [answerDetails, setAnswerDetails] = useState(props?.AnswerDetails?.AnswerDetails ? props.answerDetails : null)
     // console.log(answerDetails);
     const [questionCategory, setQuestionCategory] = useState(null);
@@ -39,12 +34,6 @@ const AnswerDetails = (props) => {
                     size={'lg'}
                     centered
                 >
-                    {/* {unansweredQuestions.map((question) => {
-            return (
-
-            )} */}
-
-
 
 
                     <Modal.Header
@@ -137,8 +126,6 @@ function mapStateToProps(state) {
     return {
         answerDetails: state.answerDetails.answerDetails,
         categories: state.categories.categories,
-        unansweredQuestions: state.unansweredQuestions
-
     }
 }
-export default connect(mapStateToProps)(AnswerDetails);
+export default connect(mapStateToProps)(AnswerQuestion);

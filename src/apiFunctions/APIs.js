@@ -70,4 +70,20 @@ export async function Get_Question_By_OWNER_ID(OWNER_ID) {
     return result;
 };
 
+export async function Edit_Answer(answer) {
+
+    let result = await myProxy.Edit_Answer(answer);
+
+    if (result?.My_Result) {
+        console.log(result.My_Result);
+        alert(JSON.stringify(result.My_Result))
+
+        return result.My_Result;
+    }
+    else {
+        alert(JSON.stringify(result))
+    }
+    return result;
+};
+
 
