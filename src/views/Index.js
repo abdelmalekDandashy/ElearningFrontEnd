@@ -34,6 +34,9 @@ import AnswerDetails from "./AnswerDetails";
 import Question from "components/Question/Question";
 
 const Index = (props) => {
+
+  let myProxy = new Proxy();
+
   let featuredAnswers = props?.featuredAnswers?.answers ? props.featuredAnswers.answers : null;
   let answerDetails;
   const [answerDetailsState, setAnswerDetailsState] = useState(1);
@@ -83,7 +86,8 @@ const Index = (props) => {
   };
   async function getUnansweredQuestion(ownerId) {
     unansweredQuestions = await functions.Get_Question_By_OWNER_ID(ownerId);
-    handleUnansweredQuestions(unansweredQuestions.slice(0, 30).sort((a, b) => (a.QUESTION_ID < b.QUESTION_ID) ? 1 : -1));
+    // console.log(unansweredQuestions)
+    handleUnansweredQuestions(unansweredQuestions.sort((a, b) => (a.QUESTION_ID < b.QUESTION_ID) ? 1 : -1));
   };
 
 
@@ -153,13 +157,12 @@ const Index = (props) => {
     oQuestion.OWNER_ID = ownerId;
     oQuestion.ENTRY_USER_ID = 1;
 
-    // let result = await myProxy.Edit_Question(oQuestion);
+    let result = await myProxy.Edit_Question(oQuestion);
     // console.log(result);
-    // if (result?.My_Result) {
-    //   // console.log(result);
-    //   handleFeaturedteachers(result.My_Result);
-
-    // }
+    if (result?.My_Result) {
+      // console.log(result);
+      alert(result.My_Result)
+    }
   }
 
 

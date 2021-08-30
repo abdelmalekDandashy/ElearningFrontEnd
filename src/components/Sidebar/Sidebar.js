@@ -20,6 +20,7 @@ import React, { useState } from "react";
 import { NavLink as NavLinkRRD, Link } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
+import { connect } from "react-redux";
 
 // reactstrap components
 import {
@@ -87,7 +88,26 @@ const Sidebar = (props) => {
     });
   };
 
-  const { bgColor, routes, logo } = props;
+  let { bgColor, routes, logo, user } = props;
+  // console.log(user)
+
+  user.length !== 0 ?
+    routes = routes.filter(route => route.name !== "Login")
+    : routes = routes
+
+  user.length !== 0 ?
+    routes = routes.filter(route => route.name !== "Register")
+    : null
+
+  user.length == 0 ?
+    routes = routes.filter(route => route.name !== "User Profile")
+    : null
+  user.length == 0 ?
+    routes = routes.filter(route => route.name !== "Home")
+    : null
+
+  // console.log(routes);
+
   let navbarBrandProps;
   if (logo && logo.innerLink) {
     navbarBrandProps = {
@@ -293,5 +313,10 @@ Sidebar.propTypes = {
     imgAlt: PropTypes.string.isRequired,
   }),
 };
-
-export default Sidebar;
+function mapStateToProps(state) {
+  return {
+    // unansweredQuestions: state.unansweredQuestions,
+    user: state.user
+  }
+}
+export default connect(mapStateToProps)(Sidebar);

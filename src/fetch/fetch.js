@@ -1,9 +1,9 @@
 
 export class Proxy {
   constructor() {
-    this.APIBaseUrl = 'https://localhost:5001/api/data';
+    this.APIBaseUrl = 'http://localhost:5000/api/data';
     this.url = '';
-    this.Ticket = 'USER_ID:4[~!@]OWNER_ID:1[~!@]START_DATE:2021-05-03[~!@]START_MINUTE:43[~!@]SESSION_PERIOD:60';
+    this.Ticket = 'USER_ID:5[~!@]OWNER_ID:1[~!@]START_DATE:2021-08-10[~!@]START_MINUTE:912[~!@]SESSION_PERIOD:60';
     this.TicketMode = 'url';
   }
   api(url) {
@@ -30,7 +30,6 @@ export class Proxy {
     })
       .then(response => {
         if (!response.ok) {
-          // console.log(response);
           throw new Error(response.statusText);
         }
         return response.json();
@@ -57,6 +56,14 @@ export class Proxy {
     });
     return result.My_Result;
   }
+
+  async Get_Answer_By_TEACHER_ID_Adv(i_Params_Get_Answer_By_TEACHER_ID) {
+    this.url = this.APIBaseUrl + '/Get_Answer_By_TEACHER_ID_Adv?Ticket=' + (this.TicketMode === 'url' ? this.Ticket : '');
+    const result = await this.apiPost(this.url, i_Params_Get_Answer_By_TEACHER_ID).then(async (resp) => {
+      return resp;
+    })
+    return result.My_Result;
+  }
   async Delete_Answer(i_Params_Delete_Answer) {
     this.url = this.APIBaseUrl + '/Delete_Answer?Ticket=' + (this.TicketMode === 'url' ? this.Ticket : '');
     const result = await this.apiPost(this.url, i_Params_Delete_Answer).then(async (resp) => {
@@ -74,6 +81,7 @@ export class Proxy {
 
   async Get_Answer_By_OWNER_ID_Adv(i_Params_Get_Answer_By_OWNER_ID) {
     this.url = this.APIBaseUrl + '/Get_Answer_By_OWNER_ID_Adv?Ticket=' + (this.TicketMode === 'url' ? this.Ticket : '');
+
     const result = await this.apiPost(this.url, i_Params_Get_Answer_By_OWNER_ID).then(async (resp) => {
       return resp;
     })
@@ -278,6 +286,8 @@ export class Teacher {
 export class Student {
 }
 export class Params_Get_Answer_By_Criteria {
+}
+export class Params_Get_Answer_By_TEACHER_ID {
 }
 export class Params_Delete_Answer {
 }

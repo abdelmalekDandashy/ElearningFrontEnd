@@ -74,9 +74,28 @@ export async function Edit_Answer(answer) {
 
     let result = await myProxy.Edit_Answer(answer);
 
-    if (result?.My_Result) {
+    if (result?.My_Result !== null) {
         console.log(result.My_Result);
-        alert(JSON.stringify(result.My_Result))
+        // alert(JSON.stringify(result.My_Result));
+        alert("Answer was added succesfully")
+
+        return result.My_Result;
+    }
+    else {
+        alert(JSON.stringify(result))
+    }
+    return result;
+};
+export async function Get_Answer_By_TEACHER_ID_Adv(teacherID) {
+    let oParams_Get_Answer_By_TEACHER_ID = new P.Params_Get_Answer_By_TEACHER_ID();
+    oParams_Get_Answer_By_TEACHER_ID.TEACHER_ID = teacherID;
+
+    let result = await myProxy.Get_Answer_By_TEACHER_ID_Adv(oParams_Get_Answer_By_TEACHER_ID);
+
+    if (result?.My_Result !== null
+    ) {
+        console.log(JSON.stringify(result.My_Result));
+
 
         return result.My_Result;
     }

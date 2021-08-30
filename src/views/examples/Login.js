@@ -126,7 +126,8 @@ const Login = (props) => {
       if (result?.My_Result.USER_TYPE_CODE_ID === 2) {
 
         // navigate to profile/home page
-        history.push("/admin/user-profile")
+        // history.push("/admin/user-profile")
+        history.push("/admin/index")
       }
       if (result?.My_Result.USER_TYPE_CODE_ID === 3) {
 
@@ -159,6 +160,7 @@ const Login = (props) => {
       userId: user.USER_ID,
       studentId: user.STUDENT_ID,
       teacherId: user.TEACHER_ID,
+      myTicket: user.myTicket,
     }));
 
 

@@ -29,7 +29,7 @@ const Question = (props) => {
   const clickHandler = (question) => {
     setShow(!show);
     setMyQuestion(question);
-    console.log(question);
+    // console.log(question);
   };
 
 
@@ -46,6 +46,7 @@ const Question = (props) => {
 
     functions.Edit_Answer(Answer);
     // console.log(Answer);
+
   };
 
   const hide = () => {
@@ -67,6 +68,7 @@ const Question = (props) => {
             onHide={hide}
             size={'lg'}
             centered
+            backdrop={'static'}
           >
             <Modal.Header
               className="question bg-white p-3 border-bottom"
@@ -216,17 +218,29 @@ const Question = (props) => {
                   answerClickHandler()
                 }}
                 className="btn border-success align-items-center btn-success" type="button">
+                {/* Modal button */}
                 Answer
               </button>
             </div>
           </Modal>
           <div className="container mt-5">
+            {unansweredQuestions ?
+              <div className="d-flex justify-content-center row"
+                style={{ marginBottom: 20 }}
+              >
+
+                <h1>
+                  Questions you may answer:
+                </h1>
+              </div> : null
+            }
 
             {unansweredQuestions ?
 
               unansweredQuestions.map((question) => {
 
                 return (
+
 
                   <div className="d-flex justify-content-center row"
                     style={{ marginBottom: 20 }}

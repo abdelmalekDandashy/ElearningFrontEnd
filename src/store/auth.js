@@ -8,6 +8,7 @@ const CREATE_FEATURED_ANSWERS = 'CREATE_FEATURED_ANSWERS';
 const CREATE_ANSWER_DETAILS = 'CREATE_ANSWER_DETAILS';
 const CREATE_CATEGORIES = 'CREATE_CATEGORIES';
 const CREATE_UNANSWERED_QUESTIONS = 'CREATE_UNANSWERED_QUESTIONS';
+const CREATE_TEACHER_ANSWERS = 'CREATE_TEACHER_ANSWERS';
 
 
 
@@ -30,6 +31,9 @@ export function createFeaturedteachers(featuredTeachers) {
 export function createFeaturedAnswers(featuredAnswers) {
     return { type: CREATE_FEATURED_ANSWERS, payload: featuredAnswers };
 }
+export function createTeacherAnswers(teacherAnswers) {
+    return { type: CREATE_TEACHER_ANSWERS, payload: teacherAnswers };
+}
 export function createAnswersDetails(answerDetails) {
     return { type: CREATE_ANSWER_DETAILS, payload: answerDetails };
 }
@@ -38,18 +42,7 @@ export function createCategories(categories) {
     return { type: CREATE_CATEGORIES, payload: categories };
 }
 export function createUnansweredQuestions(questions) {
-    // console.log(questions)
-    // let filtredQuestions = [];
 
-    // if (questions != null || questions !== undefined) {
-
-    //     questions.answers.map((x) => {
-    //         questions.push(x.IS_ANSWERED ? x : null)
-    //         return filtredQuestions;
-    //     })
-    //     return { type: CREATE_UNANSWERED_QUESTIONS, payload: filtredQuestions };
-    // }
-    // else
     return { type: CREATE_UNANSWERED_QUESTIONS, payload: questions };
 }
 
@@ -74,6 +67,7 @@ const initialState = {
     answerDetails: [],
     categories: [],
     unansweredQuestions: [],
+    teacherAnswers: [],
 }
 
 export default function reducer(state = initialState, action) {
@@ -109,6 +103,11 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 categories: action.payload
+            }
+        case CREATE_TEACHER_ANSWERS:
+            return {
+                ...state,
+                teacherAnswers: action.payload.answersByTeacher
             }
         case CREATE_UNANSWERED_QUESTIONS:
             // console.log(action.payload.answers.IS_ANSWERED.filter(item => item.IS_ANSWERED !== false))

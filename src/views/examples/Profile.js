@@ -15,7 +15,7 @@
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 */
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 // import { useHistory } from "react-router-dom";
@@ -35,20 +35,56 @@ import {
 } from "reactstrap";
 // core components
 import UserHeader from "components/Headers/UserHeader.js";
-import { useSelector, connect } from 'react-redux';
-
+import { connect } from 'react-redux';
+import * as functions from '../../apiFunctions/APIs';
+import * as P from '../../fetch/fetch';
+import * as Actions from '../../store/auth';
+import { useDispatch } from "react-redux";
+import TeacherAnswersScreen from "./TeacherAnswersScreen";
 
 const Profile = (props) => {
-  let history = useHistory();
+  let dispatch = useDispatch();
+  let answersByTeacher = [];
+  // const { user } = props;
+  const createTeacherAnswers = answersByTeacher => {
+    dispatch(Actions.createTeacherAnswers({ answersByTeacher }));
+  }
+  async function Get_Answer_By_TEACHER_ID(TEACHER_ID) {
+    answersByTeacher = await functions.Get_Answer_By_TEACHER_ID_Adv(TEACHER_ID);
+    console.log('ayyyyyyyyyyyyyyyyyyyyyyy');
+    createTeacherAnswers(answersByTeacher);
+  };
 
-  // props.user != null ? "" : history.replace('auth/login')
+  useEffect(() => {
+    if (props.user !== null) { Get_Answer_By_TEACHER_ID(props.user.teacherId) };
+  }, [])
+
+  // user?.teacherId ? console.log(user) : console.log('no user')
   return (
     <>
       <UserHeader name={props.user?.firstName} />
       {/* Page content */}
-      <Container className="mt--7" fluid>
-        <Row>
-          <Col className="order-xl-2 mb-5 mb-xl-0" xl="4">
+      <Container className="mt--7" fluid
+        style={{
+          height: '100%',
+          display: 'flex',
+          flex: 1,
+          flexDirection: 'column',
+          // justifyContent: 'center',
+          // alignItems: 'center',
+          // backgroundColor: 'red'
+        }}
+      >
+        <Row
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            flex: 1,
+            alignSelf: 'center',
+            // backgroundColor: 'blue'
+          }}
+        >
+          <Col className="order-xl-2 mb-5 mb-xl-0" xl="8">
             <Card className="card-profile shadow">
               <Row className="justify-content-center">
                 <Col className="order-lg-2" lg="3">
@@ -131,7 +167,7 @@ const Profile = (props) => {
             </Card>
           </Col>
           {/* ---------
-            <Col className="order-xl-1" xl="8">
+          <Col className="order-xl-1" xl="8">
             <Card className="bg-secondary shadow">
               <CardHeader className="bg-white border-0">
                 <Row className="align-items-center">
@@ -229,7 +265,7 @@ const Profile = (props) => {
                     </Row>
                   </div>
                   <hr className="my-4" />
-               
+
                   <h6 className="heading-small text-muted mb-4">
                     Contact information
                   </h6>
@@ -307,7 +343,7 @@ const Profile = (props) => {
                     </Row>
                   </div>
                   <hr className="my-4" />
-                 
+
                   <h6 className="heading-small text-muted mb-4">About me</h6>
                   <div className="pl-lg-4">
                     <FormGroup>
@@ -328,6 +364,31 @@ const Profile = (props) => {
           </Col>
           --------- */}
         </Row>
+        <Row>
+          <Col>
+            {props.user?.teacherId > 0 ?
+              //
+              props.teacherAnswers ?
+                <div
+                  style={{
+                    flex: 1,
+                    // backgroundColor: 'red'
+                  }}
+                >
+
+                  <TeacherAnswersScreen>
+
+                  </TeacherAnswersScreen>
+
+                </div>
+                : 'bye'
+
+              :
+              null
+
+            }
+          </Col>
+        </Row>
       </Container>
     </>
   );
@@ -335,7 +396,8 @@ const Profile = (props) => {
 function mapStateToProps(state) {
   return {
     user: state.user,
-    featuredTeachers: state.featuredTeachers
+    featuredTeachers: state.featuredTeachers,
+    teacherAnswers: state.teacherAnswers,
   }
 }
 export default connect(mapStateToProps)(Profile);
