@@ -192,8 +192,8 @@ const Index = (props) => {
   };
   return (
     <>
-      <AnswerDetails onClick={clickHandler} visible={show} hide={hide} answerDetails={answerDetailsState} />
 
+      <AnswerDetails onClick={clickHandler} visible={show} hide={hide} answerDetails={answerDetailsState} />
       {user !== null && user.userTypeCode === 2 ?
         <Question></Question>
         :

@@ -17,7 +17,7 @@
 */
 /*eslint-disable*/
 import React, { useState } from "react";
-import { NavLink as NavLinkRRD, Link } from "react-router-dom";
+import { NavLink as NavLinkRRD, Link, useHistory } from "react-router-dom";
 // nodejs library to set properties for components
 import { PropTypes } from "prop-types";
 import { connect } from "react-redux";
@@ -53,9 +53,13 @@ import {
   Col,
 } from "reactstrap";
 
+import * as functions from '../../store/auth';
+
 var ps;
 
 const Sidebar = (props) => {
+  let history = useHistory();
+
   const [collapseOpen, setCollapseOpen] = useState();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
@@ -69,6 +73,8 @@ const Sidebar = (props) => {
   const closeCollapse = () => {
     setCollapseOpen(false);
   };
+
+
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
@@ -104,6 +110,9 @@ const Sidebar = (props) => {
     : null
   user.length == 0 ?
     routes = routes.filter(route => route.name !== "Home")
+    : null
+  user.teacherId = 0 ?
+    routes = routes.filter(route => route.name !== "TeacherAnswers")
     : null
 
   // console.log(routes);
@@ -253,7 +262,20 @@ const Sidebar = (props) => {
             </InputGroup>
           </Form>
           {/* Navigation */}
+
           <Nav navbar>{createLinks(routes)}</Nav>
+          <div
+            style={{}}
+            onClick={() => {
+              functions.logOut();
+              history.replace('/auth/login')
+            }
+
+            }
+          >
+
+            <button>LogOut</button>
+          </div>
           {/* Divider */}
           <hr className="my-3" />
           {/* Heading */}

@@ -81,6 +81,7 @@ const Admin = (props) => {
           {...props}
           brandText={getBrandText(props.location.pathname)}
         />
+
         <Switch>
           {getRoutes(routes)}
           <Redirect from="*" to="/admin/index" />

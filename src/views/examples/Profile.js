@@ -47,18 +47,28 @@ const Profile = (props) => {
   let answersByTeacher = [];
   // const { user } = props;
   const createTeacherAnswers = answersByTeacher => {
+
+    console.log('shta8al dispatch');
     dispatch(Actions.createTeacherAnswers({ answersByTeacher }));
   }
   async function Get_Answer_By_TEACHER_ID(TEACHER_ID) {
     answersByTeacher = await functions.Get_Answer_By_TEACHER_ID_Adv(TEACHER_ID);
-    console.log('ayyyyyyyyyyyyyyyyyyyyyyy');
+    //alert('TEACHER_ID is : from wassim ' + TEACHER_ID);
+    // console.log('shta8let Get_Answer_By_TEACHER_ID_Adv');
+    //console.log(answersByTeacher);
     createTeacherAnswers(answersByTeacher);
   };
 
-  useEffect(() => {
-    if (props.user !== null) { Get_Answer_By_TEACHER_ID(props.user.teacherId) };
-  }, [])
+  // useEffect(() => {
+  //   if (props.user !== null && props.user !== undefined) {
 
+  //     Get_Answer_By_TEACHER_ID(props.user.teacherId)
+  //   };
+  // }, [])
+  useEffect(() => {
+    alert('bhim ' + props.user.teacherId)
+    Get_Answer_By_TEACHER_ID(props.user.teacherId)
+  }, [])
   // user?.teacherId ? console.log(user) : console.log('no user')
   return (
     <>
@@ -85,7 +95,9 @@ const Profile = (props) => {
           }}
         >
           <Col className="order-xl-2 mb-5 mb-xl-0" xl="8">
-            <Card className="card-profile shadow">
+            <Card
+              style={{ display: 'flex', flex: 1 }}
+              className="card-profile shadow">
               <Row className="justify-content-center">
                 <Col className="order-lg-2" lg="3">
                   <div className="card-profile-image">
@@ -125,7 +137,7 @@ const Profile = (props) => {
                 </div> */}
               </CardHeader>
               <CardBody className="pt-0 pt-md-4">
-                <Row>
+                {/* <Row>
                   <div className="col">
                     <div className="card-profile-stats d-flex justify-content-center mt-md-5">
                       <div>
@@ -142,11 +154,19 @@ const Profile = (props) => {
                       </div>
                     </div>
                   </div>
-                </Row>
-                <div className="text-center">
+                </Row> */}
+                <div className="text-center"
+                  style={{ marginTop: 80, display: 'flex', flex: 1, flexDirection: 'column' }}
+                >
+                  <div className="h5 mt-4">
+                    <i className="ni business_briefcase-24 mr-2" />
+
+                    {props.user?.teacherId !== 0 ? 'teacher' : 'student'}
+                  </div>
                   <h3>
                     {props.user?.firstName}{" "}{props.user?.lastName}
                   </h3>
+
                   <span className="font-weight-light">{', '}{props.user?.dob}</span>
                   <div className="h5 font-weight-300">
                     <i className="ni location_pin mr-2" />
@@ -156,6 +176,7 @@ const Profile = (props) => {
                     <i className="ni business_briefcase-24 mr-2" />
                     {props.user?.email}
                   </div>
+
                   <hr className="my-4" />
                   <p>
                     Ryan — the name taken by Melbourne-raised, Brooklyn-based
@@ -366,6 +387,14 @@ const Profile = (props) => {
         </Row>
         <Row>
           <Col>
+
+            {console.log("ana el user" + JSON.stringify(props.user))}
+            {console.log("ana el teacheranswers" + JSON.stringify(props.teacherAnswers))}
+
+
+
+            {/* {console.log(props.teacherAnswers)} */}
+
             {props.user?.teacherId > 0 ?
               //
               props.teacherAnswers ?

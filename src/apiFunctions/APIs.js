@@ -77,30 +77,31 @@ export async function Edit_Answer(answer) {
     if (result?.My_Result !== null) {
         console.log(result.My_Result);
         // alert(JSON.stringify(result.My_Result));
-        alert("Answer was added succesfully")
+        // alert("Answer was added succesfully")
 
         return result.My_Result;
     }
     else {
-        alert(JSON.stringify(result))
+        // alert(JSON.stringify(result))
     }
     return result;
 };
 export async function Get_Answer_By_TEACHER_ID_Adv(teacherID) {
+    alert('TEACHER_ID from wassim : ' + JSON.stringify(teacherID));
     let oParams_Get_Answer_By_TEACHER_ID = new P.Params_Get_Answer_By_TEACHER_ID();
     oParams_Get_Answer_By_TEACHER_ID.TEACHER_ID = teacherID;
 
     let result = await myProxy.Get_Answer_By_TEACHER_ID_Adv(oParams_Get_Answer_By_TEACHER_ID);
-
-    if (result?.My_Result !== null
+    // alert("result is" + JSON.stringify(result))
+    if (result?.My_Result
     ) {
-        console.log(JSON.stringify(result.My_Result));
+        alert('result from wassim ' + JSON.stringify(result.My_Result));
 
 
-        return result.My_Result;
+        return result;
     }
     else {
-        alert(JSON.stringify(result))
+        // alert(JSON.stringify(result))
     }
     return result;
 };

@@ -1,4 +1,9 @@
+import storage from "redux-persist/lib/storage";
+// import persistor from "./configureStore";
 
+import returnStoreAndPersistor from './configureStore';
+
+const { store, persistor } = returnStoreAndPersistor();
 
 // Actions
 const CREATE = 'CREATE';
@@ -9,6 +14,7 @@ const CREATE_ANSWER_DETAILS = 'CREATE_ANSWER_DETAILS';
 const CREATE_CATEGORIES = 'CREATE_CATEGORIES';
 const CREATE_UNANSWERED_QUESTIONS = 'CREATE_UNANSWERED_QUESTIONS';
 const CREATE_TEACHER_ANSWERS = 'CREATE_TEACHER_ANSWERS';
+const LOG_OUT = 'LOG_OUT';
 
 
 
@@ -18,6 +24,12 @@ const CREATE_TEACHER_ANSWERS = 'CREATE_TEACHER_ANSWERS';
 export function createUser(user) {
     // console.log(user)
     return { type: CREATE, payload: user };
+}
+
+export function logOut(user) {
+    alert('you have succesfully logged out');
+    persistor.flush();
+    return { type: LOG_OUT, payload: undefined };
 }
 
 export function APIError(error) {
@@ -78,6 +90,10 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 user: action.payload,
                 isAuth: true
+            }
+        case LOG_OUT:
+            return {
+                state: undefined,
             }
         case CREATE_FEATURED_TEACHERS:
             return {

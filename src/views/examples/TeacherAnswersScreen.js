@@ -25,6 +25,8 @@ const TeacherAnswersScreen = (props) => {
     const [answer, setAnswer] = useState("");
     const [myAnswer, setmyAnswer] = useState("");
 
+    console.log(props.teacherAnswers)
+
     const modalShowHandler = (question) => {
         setShow(!show);
 
@@ -52,10 +54,12 @@ const TeacherAnswersScreen = (props) => {
     };
 
 
-    console.log(props.teacherAnswers)
+    console.table('new consoooooooole' + JSON.stringify(props))
     return (
         <>
             {/* Page content */}
+            {/* <div
+            ><h1>hi</h1></div> */}
             <Row>
 
 
@@ -307,6 +311,7 @@ function mapStateToProps(state) {
     return {
         teacherAnswers: state.teacherAnswers,
         categories: state.categories.categories,
+        user: state.user,
 
     }
 }
