@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 
 // node.js library that concatenates classes (strings)
@@ -6,45 +5,33 @@ import React, { useState, useEffect } from "react";
 import Chart from "chart.js";
 // react plugin used to create charts
 // reactstrap components
-import {
-  Card,
-  Container,
-  Row,
-  Col,
-  CardBody,
-  CardTitle,
-} from "reactstrap";
+import { Card, Container, Row, Col, CardBody, CardTitle } from "reactstrap";
 
 // core components
-import {
-  chartOptions,
-  parseOptions,
-} from "variables/charts.js";
+import { chartOptions, parseOptions } from "variables/charts.js";
 
 import Header from "components/Headers/Header.js";
-import { connect } from 'react-redux';
-import {
-  Proxy
-} from '../fetch/fetch'
-import * as P from '../fetch/fetch';
-import * as functions from '../apiFunctions/APIs';
-import * as Actions from '../store/auth';
-import { useDispatch } from 'react-redux';
+import { connect } from "react-redux";
+import { Proxy } from "../fetch/fetch";
+import * as P from "../fetch/fetch";
+import * as functions from "../apiFunctions/APIs";
+import * as Actions from "../store/auth";
+import { useDispatch } from "react-redux";
 import AnswerDetails from "./AnswerDetails";
 import Question from "components/Question/Question";
 
 const Index = (props) => {
-
-  let myProxy = new Proxy();
-
-  let featuredAnswers = props?.featuredAnswers?.answers ? props.featuredAnswers.answers : null;
+  let featuredAnswers = props?.featuredAnswers?.answers
+    ? props.featuredAnswers.answers
+    : null;
   let answerDetails;
+  let categories = props?.categories ? props.categories : null;
   const [answerDetailsState, setAnswerDetailsState] = useState(1);
 
-
   useEffect(() => {
-    setAnswerDetailsState(answerDetails)
-  }, [answerDetails])
+    setAnswerDetailsState(answerDetails);
+    console.log(props.user);
+  }, [answerDetails]);
   let dispatch = useDispatch();
   let featuredAsnwersResult;
   let unansweredQuestions;
@@ -53,11 +40,11 @@ const Index = (props) => {
   const [description, setDescription] = useState();
   let studentId = props.user.studentId;
   let ownerId = 1; //fix if can after 10 years
+  let categoriesFromAPI = props.categories;
   const [isPublic, setIsPublic] = useState(true);
-  const handleCheckBox = () => setIsPublic(!isPublic);
+  // const handleCheckBox = () => setIsPublic(!isPublic);
   const [show, setShow] = useState(false);
   let user = props?.user ? props.user : null;
-
 
   //
   // const [categories, setcategories] = useState([
@@ -67,65 +54,61 @@ const Index = (props) => {
 
   // ]);
 
-  const categories = [
-    { value: '1', name: "phy" },
-    { value: '2', name: 'bio' },
-    { value: '3', name: "programming" },
-  ];
+  // const categories = [
+  //   { value: '1', name: "phy" },
+  //   { value: '2', name: 'bio' },
+  //   { value: '3', name: "programming" },
+  // ];
 
-  const handleFeaturedAnswers = answers => {
+  const handleFeaturedAnswers = (answers) => {
     dispatch(Actions.createFeaturedAnswers({ answers }));
-  }
-  const handleUnansweredQuestions = answers => {
+  };
+  const handleUnansweredQuestions = (answers) => {
     dispatch(Actions.createUnansweredQuestions({ answers }));
-  }
+  };
 
   async function getFeaturedAsnwers(ownerId) {
     featuredAsnwersResult = await functions.Get_Answer_By_OWNER_ID_Adv(ownerId);
-    handleFeaturedAnswers(featuredAsnwersResult.slice(0, 10).sort((a, b) => (a.ANSWER_ID < b.ANSWER_ID) ? 1 : -1));
-  };
+    handleFeaturedAnswers(
+      featuredAsnwersResult.sort((a, b) => (a.ANSWER_ID < b.ANSWER_ID ? 1 : -1))
+    );
+    // handleFeaturedAnswers(featuredAsnwersResult.slice(0, 10).sort((a, b) => (a.ANSWER_ID < b.ANSWER_ID) ? 1 : -1));
+  }
   async function getUnansweredQuestion(ownerId) {
     unansweredQuestions = await functions.Get_Question_By_OWNER_ID(ownerId);
     // console.log(unansweredQuestions)
-    handleUnansweredQuestions(unansweredQuestions.sort((a, b) => (a.QUESTION_ID < b.QUESTION_ID) ? 1 : -1));
-  };
-
-
-  const handleAnswerDetails = answerDetails => {
-    dispatch(Actions.createAnswersDetails({ answerDetails }));
+    handleUnansweredQuestions(
+      unansweredQuestions.sort((a, b) =>
+        a.QUESTION_ID < b.QUESTION_ID ? 1 : -1
+      )
+    );
   }
+
+  const handleAnswerDetails = (answerDetails) => {
+    dispatch(Actions.createAnswersDetails({ answerDetails }));
+  };
   async function Get_Answer_Details(QUESTION_ID) {
     answerDetails = await functions.Get_Answer_Details(QUESTION_ID);
     handleAnswerDetails(answerDetails);
-  };
-
-
-
+  }
 
   useEffect(() => {
     async function Get_Category_By_OWNER_ID(CATEGORY_ID) {
       let categories = await functions.Get_Category_By_OWNER_ID(CATEGORY_ID);
       dispatch(Actions.createCategories({ categories }));
-    };
+    }
     Get_Category_By_OWNER_ID(1);
-  }, [])
-
+  }, []);
 
   useEffect(() => {
     getFeaturedAsnwers(1);
     getUnansweredQuestion(1);
-  }, [])
-
-
-
+  }, []);
 
   const clickHandler = (QUESTION_ID) => {
-    Get_Answer_Details(QUESTION_ID)
-    setShow(!show)
+    Get_Answer_Details(QUESTION_ID);
+    setShow(!show);
   };
-
-
-
 
   function handleChange(event) {
     setSelectedCategory(event.target.value);
@@ -137,14 +120,13 @@ const Index = (props) => {
     event.preventDefault();
   }
 
-
-
-  async function addQuestion
-    (categoryId,
-      description,
-      studentId,
-      isPublic,
-      ownerId) {
+  async function addQuestion(
+    categoryId,
+    description,
+    studentId,
+    isPublic,
+    ownerId
+  ) {
     let oQuestion = new P.Question();
 
     oQuestion.QUESTION_ID = -1;
@@ -157,130 +139,138 @@ const Index = (props) => {
     oQuestion.OWNER_ID = ownerId;
     oQuestion.ENTRY_USER_ID = 1;
 
-    let result = await myProxy.Edit_Question(oQuestion);
+    let result = await functions.Edit_Question(oQuestion);
     // console.log(result);
     if (result?.My_Result) {
       // console.log(result);
-      alert(result.My_Result)
+      // alert(result.My_Result)
     }
   }
 
-
-
-
-
-
-
-  // get 
+  // get
   // let oParams_Get_User_By_OWNER_ID = new P.Params_get_teacher();
   //   oParams_Get_User_By_OWNER_ID.OWNER_ID = 1;
-
-
-
-
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
   }
 
-
-
-
   const hide = () => {
-
-    setShow(false)
+    setShow(false);
   };
   return (
     <>
-
-      <AnswerDetails onClick={clickHandler} visible={show} hide={hide} answerDetails={answerDetailsState} />
-      {user !== null && user.userTypeCode === 2 ?
-        <Question></Question>
-        :
-        null}
-
-
-      <Header
-        user={props.user}
-        featuredTeachers={props.featuredTeachers}
+      <AnswerDetails
+        onClick={clickHandler}
+        visible={show}
+        hide={hide}
+        answerDetails={answerDetailsState}
       />
+      {user !== null && user.userTypeCode === 2 ? <Question></Question> : null}
 
+      <Header user={props.user} featuredTeachers={props.featuredTeachers} />
 
       {/* Page content */}
 
       <Container className="mt--7" fluid>
-        {user !== null && user.userTypeCode === 3 ?
-          <Row style={{ justifyContent: 'center' }} >
+        {user !== null && user.userTypeCode === 3 ? (
+          <Row style={{ justifyContent: "center" }}>
             <Col className="mb-5 mb-xl-0" xl="8">
-              <Card style={{ padding: 60, margin: 30 }} className="bg-gradient-default shadow">
+              <Card
+                style={{ padding: 60, margin: 30 }}
+                className="bg-gradient-default shadow"
+              >
                 <form onSubmit={handleSubmit}>
-                  <fieldset >
-                    <legend style={{ color: "rgb(235, 240, 255)" }}>ask a question !!</legend>
-                    <div style={{ backgroundColor: "rgb(215, 224, 252)", margin: 10, borderRadius: 10, padding: 20 }}>
-                      <label style={{ fontWeight: 'bold' }}>Tips on getting good answers quickly:</label>
+                  <fieldset>
+                    <legend style={{ color: "rgb(235, 240, 255)" }}>
+                      ask a question !!
+                    </legend>
+                    <div
+                      style={{
+                        backgroundColor: "rgb(215, 224, 252)",
+                        margin: 10,
+                        borderRadius: 10,
+                        padding: 20,
+                      }}
+                    >
+                      <label style={{ fontWeight: "bold" }}>
+                        Tips on getting good answers quickly:
+                      </label>
                       <ul>
                         <li>
                           Make sure your question has not been asked already.
                         </li>
-                        <li>
-                          Keep your question short and to the point.
-                        </li>
-                        <li>
-                          Double-check grammar and spelling.
-                        </li>
+                        <li>Keep your question short and to the point.</li>
+                        <li>Double-check grammar and spelling.</li>
                       </ul>
                     </div>
                     <div style={{ marginInline: 10 }}>
-
                       <div class="mb-3">
-                        <label style={{ color: "rgb(235, 240, 255)" }}
+                        <label
+                          style={{ color: "rgb(235, 240, 255)" }}
                           for="textInput"
                           class="form-label"
-                        >question:</label>
+                        >
+                          question:
+                        </label>
                         {/* <textarea rows="5" cols="50" id="multiLineInput"></textarea> */}
-                        <input type="text" id="textInput" class="form-control" placeholder="example: why the sky is blue?"
-                          onChange={(text => handleDescription(text))}
+                        <input
+                          type="text"
+                          id="textInput"
+                          class="form-control"
+                          placeholder="example: why the sky is blue?"
+                          onChange={(text) => handleDescription(text)}
                         />
                       </div>
 
                       {/* <label for="disabledSelect" class="form-label">select category</label> */}
-                      <select style={{ width: '40%' }}
+                      <select
+                        style={{ width: "40%" }}
                         class="custom-select"
                         id="inputGroupSelect01"
                         aria-label=".form-select-sm example"
                         value={selectedCategory}
                         onChange={handleChange}
                       >
-                        <option value='0' disabled>select a category</option>
-                        {categories.map((x) =>
-                        (
-                          <option value={x.value}>{x.name}</option>
-
+                        <option value="0" disabled>
+                          select a category
+                        </option>
+                        {categoriesFromAPI.map((x) => (
+                          <option value={x.CATEGORY_ID}>{x.DESCRIPTION}</option>
                         ))}
-
                       </select>
 
                       <div class="mb-3">
                         <div class="form-check">
-                          <input class="form-check-input"
+                          {/* <input
+                            class="form-check-input"
                             type="checkbox"
                             id="isPublicCheckbox"
                             checked={!isPublic}
-                            onClick={handleCheckBox}
+                            // onClick={handleCheckBox}
+                          /> */}
 
-                          />
-
-                          <label class="form-check-label" for="isPublicCheckbox">
+                          {/* <label class="form-check-label" for="isPublicCheckbox">
                             make this question only visible to teachers i follow
-                          </label>
+                          </label> */}
                         </div>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-primary"
+                    <button
+                      type="submit"
+                      class="btn btn-primary"
                       disabled={selectedCategory && description ? false : true}
-                      onClick={() => addQuestion(selectedCategory, description, studentId, isPublic, ownerId)}>
+                      onClick={() =>
+                        addQuestion(
+                          selectedCategory,
+                          description,
+                          studentId,
+                          isPublic,
+                          ownerId
+                        )
+                      }
+                    >
                       Submit
-
                     </button>
                   </fieldset>
                 </form>
@@ -293,88 +283,87 @@ const Index = (props) => {
               </Card>
             </Col>
           </Row>
-
-
-          : null}
-        {user !== null && user.userTypeCode === 3 ?
-
+        ) : null}
+        {user !== null && user.userTypeCode === 3 ? (
           <>
-            <h1 style={{ color: 'black' }}>
-              latest answered Questions:
-            </h1>
+            <h1 style={{ color: "black" }}>latest answered Questions:</h1>
             <Row>
-
-              {
-                featuredAnswers ?
-                  featuredAnswers.map((item) =>
-                  (
-                    <Col
-                      style={{ margin: 4 }}
+              {featuredAnswers ? (
+                featuredAnswers.map((item) => (
+                  <Col style={{ margin: 4 }}>
+                    <Card
+                      style={{
+                        height: 300,
+                        width: 400,
+                        background:
+                          "linear-gradient(to right, #046d7a, #17b2c3)",
+                        marginTop: 20,
+                      }}
+                      className="card-stats mb-4 mb-xl-0"
                     >
-                      <Card
+                      <a onClick={() => clickHandler(item.QUESTION_ID)}>
+                        <CardBody>
+                          <Row>
+                            <div className="col">
+                              <CardTitle
+                                tag="h5"
+                                className="text-uppercase mb-0"
+                              >
+                                <p class="font-weight-bold ">question :</p>
+                              </CardTitle>
+                              {}
+                              <span className="h2 font-weight-bold mb-0">
+                                {item.question.slice(0, 47)}
+                              </span>{" "}
+                            </div>
+                            <Col className="col-auto"></Col>
+                          </Row>
 
-                        style={{ height: 300, width: 400, background: "linear-gradient(to right, #046d7a, #17b2c3)", marginTop: 20 }} className="card-stats mb-4 mb-xl-0">
-                        <a onClick={() => clickHandler(item.QUESTION_ID)} >
-                          <CardBody>
-                            <Row>
-                              <div className="col">
-                                <CardTitle
-                                  tag="h5"
-                                  className="text-uppercase mb-0"
-                                >
-                                  <p class="font-weight-bold ">question :</p>
+                          <h4 className="mt-3 mb-0 font-weight-bold text-muted text-sm">
+                            answer :
+                          </h4>
+                          <text className="h3 mb-0 font-weight-bold">
+                            {item.answer.slice(0, 100)}
+                            {"..."}
+                          </text>
 
-                                </CardTitle>
-                                { }
-                                <span className="h2 font-weight-bold mb-0">
-                                  {item.question.slice(0, 47)}
-                                </span>
-                                {" "}
-
-                              </div>
-                              <Col className="col-auto">
-
-                              </Col>
-                            </Row>
-
-                            <h4 className="mt-3 mb-0 font-weight-bold text-muted text-sm">
-                              answer :
-                            </h4>
-                            <text className='h3 mb-0 font-weight-bold'>
-                              {item.answer.slice(0, 100)}{"..."}
-                            </text >
-                            <p className="mt-3 mb-0 font-weight-bold text-muted text-sm">
-                              category :
-                            </p>
-                            <span className="mt-3 mb-0 font-weight-bold text-muted text-sm" > {item.CATEGORY_ID}</span>
-                          </CardBody>
-                        </a>
-                      </Card>
-                    </Col>
-
-                  )
-                  )
-                  :
-                  <div>
-                    <h1>
-                      teacher is logged inn
-                    </h1>
-                  </div>
-              }
-
-
+                          {/* {item.CATEGORY_ID === 1 ? 'biology' :
+                              item.CATEGORY_ID === 2 ? 'Physics' :
+                                item.CATEGORY_ID === 3 ? 'programming' :
+                                  item.CATEGORY_ID === 4 ? 'math' :
+                                    null
+                            } */}
+                          <p className="mt-3 mb-0 font-weight-bold text-muted text-sm">
+                            category :
+                          </p>
+                          <span className="mt-3 mb-0 font-weight-bold text-muted text-sm">
+                            {item.CATEGORY_ID === 1
+                              ? "biology"
+                              : item.CATEGORY_ID === 2
+                              ? "Physics"
+                              : item.CATEGORY_ID === 3
+                              ? "programming"
+                              : item.CATEGORY_ID === 4
+                              ? "math"
+                              : null}
+                          </span>
+                        </CardBody>
+                      </a>
+                    </Card>
+                  </Col>
+                ))
+              ) : (
+                <div>
+                  <h1>teacher is logged inn</h1>
+                </div>
+              )}
             </Row>
           </>
-
-          :
+        ) : (
           <div>
-            <h1>
-              teacher is logged inn
-            </h1>
+            <h1>teacher is logged inn</h1>
           </div>
-        }
-
-
+        )}
       </Container>
     </>
   );
@@ -384,7 +373,8 @@ function mapStateToProps(state) {
     featuredTeachers: state.featuredTeachers,
     user: state.user,
     featuredAnswers: state.featuredAnswers,
-    answerDetails: state.answerDetails
-  }
+    answerDetails: state.answerDetails,
+    categories: state.categories.categories,
+  };
 }
 export default connect(mapStateToProps)(Index);

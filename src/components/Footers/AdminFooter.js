@@ -45,34 +45,7 @@ const Footer = () => {
           <Nav className="nav-footer justify-content-center justify-content-xl-end">
 
 
-            <NavItem>
-              <NavLink
-                // href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                About Us
-              </NavLink>
-            </NavItem>
 
-            <NavItem>
-              <NavLink
-                // href="http://blog.creative-tim.com?ref=adr-admin-footer"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Blog
-              </NavLink>
-            </NavItem>
-
-            <NavItem>
-              <NavLink
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                MIT License
-              </NavLink>
-            </NavItem>
           </Nav>
         </Col>
       </Row>

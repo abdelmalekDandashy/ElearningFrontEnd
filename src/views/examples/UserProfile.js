@@ -42,7 +42,7 @@ import * as Actions from '../../store/auth';
 import { useDispatch } from "react-redux";
 // import TeacherAnswersScreen from "./TeacherAnswersScreen";
 
-const Profile = (props) => {
+const Maps = (props) => {
   let dispatch = useDispatch();
   let answersByTeacher = [];
   // const { user } = props;
@@ -397,5 +397,5 @@ function mapStateToProps(state) {
     teacherAnswers: state.teacherAnswers,
   }
 }
-export default connect(mapStateToProps)(Profile);
+export default connect(mapStateToProps)(Maps);
 

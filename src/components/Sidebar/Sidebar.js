@@ -53,7 +53,7 @@ import {
   Col,
 } from "reactstrap";
 
-import * as functions from '../../store/auth';
+import * as functions from "../../store/auth";
 
 var ps;
 
@@ -73,7 +73,6 @@ const Sidebar = (props) => {
   const closeCollapse = () => {
     setCollapseOpen(false);
   };
-
 
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
@@ -95,27 +94,36 @@ const Sidebar = (props) => {
   };
 
   let { bgColor, routes, logo, user } = props;
-  // console.log(user)
-
-  user.length !== 0 ?
-    routes = routes.filter(route => route.name !== "Login")
-    : routes = routes
-
-  user.length !== 0 ?
-    routes = routes.filter(route => route.name !== "Register")
-    : null
-
-  user.length == 0 ?
-    routes = routes.filter(route => route.name !== "User Profile")
-    : null
-  user.length == 0 ?
-    routes = routes.filter(route => route.name !== "Home")
-    : null
-  user.teacherId = 0 ?
-    routes = routes.filter(route => route.name !== "TeacherAnswers")
-    : null
-
   // console.log(routes);
+  // console.log(user);
+
+  // iza user is logged in => shil el Login Screen men el routes:
+  user.length !== 0
+    ? (routes = routes.filter((route) => route.name !== "Login"))
+    : (routes = routes);
+
+  // iza user is logged in => shil el "Register Scree"n men el routes:
+  user.length !== 0
+    ? (routes = routes.filter((route) => route.name !== "Register"))
+    : (routes = routes);
+
+  // iza user is NOT logged in => shil el "User Profile" men el routes:
+  user.length == 0
+    ? (routes = routes.filter((route) => route.name !== "User Profile"))
+    : (routes = routes);
+
+
+  // iza user is NOT logged in => shil el "Home" men el routes:
+  user.length == 0
+    ? (routes = routes.filter((route) => route.name !== "Home"))
+    : (routes = routes);
+
+  // iza user is NOT Teacher => shil el "TeacherAnswers" men el routes:
+  user.teacherId < 1
+    ? (routes = routes.filter((route) => route.name !== "TeacherAnswers"))
+    : user.teacherId;
+
+  // alert(JSON.stringify(routes));
 
   let navbarBrandProps;
   if (logo && logo.innerLink) {
@@ -152,7 +160,7 @@ const Sidebar = (props) => {
               alt={logo.imgAlt}
               className="navbar-brand-img"
               src={logo.imgSrc}
-              style={{ width: '60%', height: '100%' }}
+              style={{ width: "60%", height: "100%" }}
             />
           </NavbarBrand>
         ) : null}
@@ -245,69 +253,24 @@ const Sidebar = (props) => {
               </Col>
             </Row>
           </div>
-          {/* Form */}
-          <Form className="mt-4 mb-3 d-md-none">
-            <InputGroup className="input-group-rounded input-group-merge">
-              <Input
-                aria-label="Search"
-                className="form-control-rounded form-control-prepended"
-                placeholder="Search"
-                type="search"
-              />
-              <InputGroupAddon addonType="prepend">
-                <InputGroupText>
-                  <span className="fa fa-search" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </Form>
-          {/* Navigation */}
-
           <Nav navbar>{createLinks(routes)}</Nav>
+
+
+          <hr className="my-3" />
           <div
             style={{}}
             onClick={() => {
               functions.logOut();
-              history.replace('/auth/login')
-            }
-
-            }
+              history.replace("/auth/login");
+            }}
           >
-
-            <button>LogOut</button>
+            <Button color="info" href="#pablo">
+              Log Out
+            </Button>
           </div>
-          {/* Divider */}
-          <hr className="my-3" />
-          {/* Heading */}
-          {/* <h6 className="navbar-heading text-muted">Documentation</h6> */}
-          {/* Navigation */}
           <Nav className="mb-md-3" navbar>
             <NavItem>
-              {/* <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/overview?ref=adr-admin-sidebar">
-                <i className="ni ni-spaceship" />
-                Getting started
-              </NavLink> */}
             </NavItem>
-            {/* <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/colors?ref=adr-admin-sidebar">
-                <i className="ni ni-palette" />
-                Foundation
-              </NavLink>
-            </NavItem> */}
-            <NavItem>
-              <NavLink href="https://demos.creative-tim.com/argon-dashboard-react/#/documentation/alerts?ref=adr-admin-sidebar">
-                <i className="ni ni-ui-04" />
-                Components
-              </NavLink>
-            </NavItem>
-          </Nav>
-          <Nav className="mb-md-3" navbar>
-            {/* <NavItem className="active-pro active">
-              <NavLink href="https://www.creative-tim.com/product/argon-dashboard-pro-react?ref=adr-admin-sidebar">
-                <i className="ni ni-spaceship" />
-                Upgrade to PRO
-              </NavLink>
-            </NavItem> */}
           </Nav>
         </Collapse>
       </Container>
@@ -338,7 +301,7 @@ Sidebar.propTypes = {
 function mapStateToProps(state) {
   return {
     // unansweredQuestions: state.unansweredQuestions,
-    user: state.user
-  }
+    user: state.user,
+  };
 }
 export default connect(mapStateToProps)(Sidebar);

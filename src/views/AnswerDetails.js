@@ -20,9 +20,17 @@ const AnswerDetails = (props) => {
     // console.log(answerDetails);
     const [questionCategory, setQuestionCategory] = useState(null);
     let answerDetails = props.answerDetails
-    let categories = props.categories;
-    // console.log(categories);
+    let categories =
+        [{ CATEGORY_ID: 1, "NAME": "bio", DESCRIPTION: "biology", "ENTRY_USER_ID": 1, "ENTRY_DATE": "2020-01-20", "OWNER_ID": 1 },
+        { CATEGORY_ID: 2, "NAME": "Phy", DESCRIPTION: "Physics", "ENTRY_USER_ID": 1, "ENTRY_DATE": "2020-05-06", "OWNER_ID": 1 },
+        { CATEGORY_ID: 3, "NAME": "prog", DESCRIPTION: "programming", "ENTRY_USER_ID": 1, "ENTRY_DATE": "2020-05-06", "OWNER_ID": 1 },
+        { CATEGORY_ID: 4, "NAME": "math", DESCRIPTION: "math", "ENTRY_USER_ID": 1, "ENTRY_DATE": "2021-09-16", "OWNER_ID": 1 }];
+    // console.log(JSON.stringify(categories));
     // console.log(answerDetails);
+
+    // console.log('category');
+    // console.log(questionCategory);
+
 
     return (
         <Container className="mt--7" fluid>
@@ -65,7 +73,15 @@ const AnswerDetails = (props) => {
                             </span>
                                 <span style={{ color: "#046d7a", marginLeft: 20 }}>
                                     {"category: "}
-                                    {questionCategory ? categories[questionCategory].DESCRIPTION : null}
+
+                                    {questionCategory === 1 ? 'biology' :
+                                        questionCategory === 2 ? 'Physics' :
+                                            questionCategory === 3 ? 'programming' :
+                                                questionCategory === 4 ? 'math' :
+                                                    null
+                                    }
+
+
                                 </span>
                             </h5>
 
@@ -79,6 +95,7 @@ const AnswerDetails = (props) => {
                         <Row style={{ justifyContent: 'center' }} >
                             {answerDetails ?
                                 answerDetails.map(function (item, i) {
+                                    // console.log('my iteeeeeeeeeeem' + JSON.stringify(item))
                                     if (questionCategory !== item.CATEGORY_ID) {
                                         setQuestionCategory(item.CATEGORY_ID)
                                     };

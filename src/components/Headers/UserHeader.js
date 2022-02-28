@@ -51,13 +51,13 @@ const UserHeader = (props) => {
                 This is your profile page. You can see the progress you've made
                 with your work and manage your projects or assigned tasks
               </p>
-              <Button
+              {/* <Button
                 color="info"
                 href="#pablo"
                 onClick={(e) => e.preventDefault()}
               >
                 Edit profile
-              </Button>
+              </Button> */}
             </Col>
           </Row>
         </Container>

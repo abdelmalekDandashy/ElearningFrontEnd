@@ -47,7 +47,7 @@ export class Proxy {
     const result = await this.apiPost(this.url, i_Answer).then(async (resp) => {
       return resp;
     });
-    return result.My_Answer;
+    return result;
   }
   async Get_Answer_By_Criteria(i_Params_Get_Answer_By_Criteria) {
     this.url = this.APIBaseUrl + '/Get_Answer_By_Criteria?Ticket=' + (this.TicketMode === 'url' ? this.Ticket : '');
@@ -62,14 +62,14 @@ export class Proxy {
     const result = await this.apiPost(this.url, i_Params_Get_Answer_By_TEACHER_ID).then(async (resp) => {
       return resp;
     })
-    return result.My_Result;
+    return result;
   }
   async Delete_Answer(i_Params_Delete_Answer) {
     this.url = this.APIBaseUrl + '/Delete_Answer?Ticket=' + (this.TicketMode === 'url' ? this.Ticket : '');
     const result = await this.apiPost(this.url, i_Params_Delete_Answer).then(async (resp) => {
       return resp;
     });
-    return result.any;
+    return result;
   }
   async Get_Answer_By_STUDENT_ID_List(i_Params_Get_Answer_By_STUDENT_ID_List) {
     this.url = this.APIBaseUrl + '/Get_Answer_By_STUDENT_ID_List?Ticket=' + (this.TicketMode === 'url' ? this.Ticket : '');

@@ -34,17 +34,19 @@ const Question = (props) => {
 
 
   const answerClickHandler = () => {
+
     var Answer = new Object();
     Answer.ANSWER_ID = -1;
     Answer.QUESTION_ID = myQuestion?.QUESTION_ID;
-    Answer.TEACHER_ID = props?.user?.userId;
+    Answer.TEACHER_ID = props?.user?.teacherId;
     Answer.STUDENT_ID = null;
     Answer.DESCRIPTION = answer;
     // Answer.ENTRY_USER_ID = 1;
     // Answer.ENTRY_DATE = '1900-01-01';
     Answer.OWNER_ID = 1;
 
-    functions.Edit_Answer(Answer);
+    functions.Edit_Answer(Answer).then(hide());
+    // hide();
     // console.log(Answer);
 
   };
@@ -272,10 +274,7 @@ const Question = (props) => {
 
                         </div>
                         <div className="d-flex flex-row justify-content-between align-items-center p-3 bg-white">
-                          <button className="btn btn-primary d-flex align-items-center btn-danger" type="button">
-                            {/* <i className="fa fa-angle-left mt-1 mr-1"></i> */}
-                            &nbsp;report question
-                          </button>
+
                           <button
                             onClick={() => clickHandler(question)}
                             className="btn btn-primary border-success align-items-center btn-success" type="button">

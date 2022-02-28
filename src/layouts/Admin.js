@@ -25,8 +25,10 @@ import AdminFooter from "components/Footers/AdminFooter.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
 
 import routes from "routes.js";
+import { connect } from "react-redux";
 
 const Admin = (props) => {
+  let { user } = props;
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -37,6 +39,11 @@ const Admin = (props) => {
   }, [location]);
 
   const getRoutes = (routes) => {
+    console.log(routes);
+    if (user.length !== 0) {
+      console.log("mafi user");
+      routes = routes.filter((route) => route.name !== "User Profile");
+    }
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
         return (
@@ -73,7 +80,6 @@ const Admin = (props) => {
           innerLink: "/admin/index",
           imgSrc: require("../assets/img/brand/ulf-logo.png").default,
           imgAlt: "...",
-
         }}
       />
       <div className="main-content" ref={mainContent}>
@@ -93,5 +99,9 @@ const Admin = (props) => {
     </>
   );
 };
-
-export default Admin;
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
+}
+export default connect(mapStateToProps)(Admin);

@@ -25,8 +25,12 @@ import AuthNavbar from "components/Navbars/AuthNavbar.js";
 import AuthFooter from "components/Footers/AuthFooter.js";
 
 import routes from "routes.js";
+import { connect } from "react-redux";
 
 const Auth = (props) => {
+  let { user } = props;
+
+  console.log(user);
   const mainContent = React.useRef(null);
   const location = useLocation();
 
@@ -43,6 +47,11 @@ const Auth = (props) => {
   }, [location]);
 
   const getRoutes = (routes) => {
+    // if (user.length !== 0) {
+    //   console.log("mafi user");
+    //   routes = routes.filter((route) => route.name !== "User Profile");
+    // }
+    console.log(routes);
     return routes.map((prop, key) => {
       if (prop.layout === "/auth") {
         return (
@@ -62,14 +71,18 @@ const Auth = (props) => {
     <>
       <div className="main-content" ref={mainContent}>
         <AuthNavbar />
-        <div className="header  py-7 py-lg-8" style={{ background: "linear-gradient(to right, #046d7a, #17b2c3)" }}>
+        <div
+          className="header  py-7 py-lg-8"
+          style={{ background: "linear-gradient(to right, #046d7a, #17b2c3)" }}
+        >
           <Container>
             <div className="header-body text-center mb-7">
               <Row className="justify-content-center">
                 <Col lg="5" md="6">
                   <h1 className="text-white">Welcome!</h1>
                   <p className="text-lead text-light">
-                    our aim is to spread experienced Teachers knwoledge to their Students in a unique way.
+                    our aim is to spread experienced Teachers knwoledge to their
+                    Students in a unique way.
                   </p>
                 </Col>
               </Row>
@@ -105,5 +118,9 @@ const Auth = (props) => {
     </>
   );
 };
-
-export default Auth;
+function mapStateToProps(state) {
+  return {
+    user: state.user,
+  };
+}
+export default connect(mapStateToProps)(Auth);
